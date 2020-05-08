@@ -16,7 +16,7 @@ create table GIAOVIEN
 	HOTEN nvarchar(40), 
 	LUONG float, 
 	PHAI nchar(3), 
-	NGSINH datetime, 
+	NGSINH datetime,
 	DIACHI nvarchar(100), 
 	GVQLCM char(5), 
 	MABM nchar(5)

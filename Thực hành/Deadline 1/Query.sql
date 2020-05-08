@@ -1,3 +1,6 @@
+-- USE master
+-- GO
+
 USE QUAN_LY_CHUYEN_BAY
 GO
 
