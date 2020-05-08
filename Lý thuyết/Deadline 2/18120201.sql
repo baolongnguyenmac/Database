@@ -121,11 +121,11 @@ WHERE GIAOVIEN.MABM = BOMON.MABM AND BOMON.MAKHOA = 'SH'
 -- vừa làm chủtrìmột đềtài 
 */
 SELECT DISTINCT TBM.HOTEN
-FROM GIAOVIEN AS TBM, GIAOVIEN AS CN, BOMON, DETAI, THAMGIADT
+FROM GIAOVIEN AS TBM, GIAOVIEN AS CN, BOMON, DETAI D1, DETAI D2, THAMGIADT
 WHERE TBM.MAGV = BOMON.TRUONGBM    -- Cho biết các têntrưởng bô môn
-    AND THAMGIADT.MAGV = TBM.MAGV AND THAMGIADT.MADT = DETAI.MADT  -- tham gia đềtài
-    AND DETAI.GVCNDT = CN.MAGV AND CN.HOTEN = N'Trương Nam Sơn' -- do Nguyễn Văn Anchủtrì 
-    AND TBM.MAGV = DETAI.GVCNDT -- chủtrìmột đềtài 
+    AND THAMGIADT.MAGV = TBM.MAGV AND THAMGIADT.MADT = D1.MADT  -- tham gia đềtài
+    AND D1.GVCNDT = CN.MAGV AND CN.HOTEN = N'Trương Nam Sơn' -- do Nguyễn Văn Anchủtrì 
+    AND TBM.MAGV = D2.GVCNDT -- chủtrìmột đềtài (có thể trùng hoặc khác với đề tài Trương nam sơn chủ nhiệm)
 
 
 /*  * CÂU 5
