@@ -1,0 +1,46 @@
+USE QLDT
+GO
+
+-- cho biết giáo viên có lương lớn nhất trong bộ môn của họ :> 
+SELECT GV.MAGV, GV.HOTEN, BOMON.TENBM, GV.LUONG
+FROM GIAOVIEN AS GV, BOMON
+WHERE GV.MABM = BOMON.MABM 
+    AND GV.LUONG >= ALL (
+        SELECT GV1.LUONG
+        FROM GIAOVIEN AS GV1
+        WHERE GV1.MABM = GV.MABM
+    )
+
+-- tìm những giáo viên làm trường bộ môn
+SELECT GV.MAGV, GV.HOTEN
+FROM GIAOVIEN AS GV
+WHERE GV.MAGV IN (
+    SELECT BOMON.TRUONGBM
+    FROM BOMON
+)
+
+-- cho biết tên của các trưởng bộ môn
+SELECT TBM.HOTEN
+FROM GIAOVIEN AS TBM
+WHERE TBM.MAGV IN (
+    SELECT BOMON.TRUONGBM
+    FROM BOMON
+)
+
+-- HOẶC
+SELECT TBM.HOTEN
+FROM GIAOVIEN AS TBM
+WHERE EXISTS (
+    SELECT *  -- you can select anything :)
+    FROM BOMON
+    WHERE TBM.MAGV = BOMON.TRUONGBM
+)
+
+-- tìm những giáo viên không phải là trưởng bộ môn
+SELECT GV.HOTEN
+FROM GIAOVIEN AS GV
+WHERE NOT EXISTS (
+    SELECT *
+    FROM BOMON
+    WHERE BOMON.TRUONGBM = GV.MAGV
+)
