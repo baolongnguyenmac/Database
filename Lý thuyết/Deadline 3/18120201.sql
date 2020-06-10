@@ -40,20 +40,29 @@ WHERE NVA.HOTEN = N'Trần Hoàng Nam' -- sử dụng Trần Hoàng Nam để te
         WHERE THAMGIADT.MADT = DETAI.MADT
     )
 
+SELECT DISTINCT D.MADT, D.TENDT
+FROM DETAI D, BOMON BM
+WHERE D.GVCNDT = BM.TRUONGBM AND BM.MABM = 'HTTT'
+    AND D.MADT NOT IN (
+        SELECT D1.MADT
+        FROM DETAI D1, THAMGIADT T, GIAOVIEN GV
+        WHERE GV.HOTEN = N'Trần Hoàng Nam' 
+            AND GV.MAGV = T.MAGV 
+            AND T.MADT = D1.MADT
+    )
+
 -- bài 3:
 -- Trong các giáo viên tham gia đề tài 
 -- thuộc chủ đề “Thành phố thông minh”, 
 -- ai (tengv) là người có lương lớn nhất
 SELECT GV.MAGV, GV.HOTEN, GV.LUONG
-FROM GIAOVIEN AS GV
-WHERE GV.LUONG >= ALL (
-    SELECT GV1.LUONG
-    FROM GIAOVIEN AS GV1, THAMGIADT, DETAI, CHUDE
-    WHERE GV1.MAGV = THAMGIADT.MAGV
-        AND DETAI.MADT = THAMGIADT.MADT
-        AND DETAI.MACD = CHUDE.MACD
-        AND CHUDE.TENCD = N'Nghiên cứu phát triển'  -- test bằng Nghiên cứu phát triển
-)
+FROM GIAOVIEN GV, THAMGIADT T, DETAI D, CHUDE C
+WHERE GV.MAGV = T.MAGV AND T.MADT = D.MADT AND D.MACD = C.MACD AND C.TENCD = N'Nghiên cứu phát triển'
+    AND GV.LUONG >= ALL (
+        SELECT GV.LUONG
+        FROM GIAOVIEN GV, THAMGIADT T, DETAI D, CHUDE C
+        WHERE GV.MAGV = T.MAGV AND T.MADT = D.MADT AND D.MACD = C.MACD AND C.TENCD = N'Nghiên cứu phát triển'
+    )
 
 -- bài 4
 -- Với mỗi đề tài, cho biết ai là người tham gia lớn tuổi nhất (madt, tendt, magv, tengv, tuoi).
